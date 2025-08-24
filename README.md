@@ -20,6 +20,9 @@ loses a ship. If the player loses three ships, the game ends.
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
 Markdown                         1              9              4             24
+Python                           1              9              6             16
+-------------------------------------------------------------------------------
+SUM:                             2             18             10             40
 -------------------------------------------------------------------------------
 ```
 <!-- CODE_STATISTICS_END -->
@@ -30,8 +33,9 @@ Markdown                         1              9              4             24
 
 ```
 alien_invasion
+├── alien_invasion.py
 └── README.md
 
-1 directory, 1 file
+1 directory, 2 files
 ```
 <!-- PROJECT_STRUCTURE_END -->
