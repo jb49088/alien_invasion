@@ -35,7 +35,7 @@ SUM:                             4             27             18             77
 alien_invasion
 ├── alien_invasion.py
 ├── images
-│   └── ship.bmp
+│   └── ship.png
 ├── README.md
 ├── settings.py
 └── ship.py
