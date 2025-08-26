@@ -2,6 +2,7 @@ import sys
 
 import pygame
 
+from dual_laser import DualLaser
 from settings import Settings
 from ship import Ship
 
@@ -19,12 +20,14 @@ class AlienInvasion:
         )
         pygame.display.set_caption("alien_invasion")
         self.ship = Ship(self)
+        self.dual_lasers = pygame.sprite.Group()
 
     def run_game(self):
         """Start the main loop for the game."""
         while True:
             self._check_events()
             self.ship.update()
+            self.dual_lasers.update()
             self._update_screen()
             self.clock.tick(60)
 
@@ -44,6 +47,8 @@ class AlienInvasion:
             self.ship.moving_right = True
         elif event.key == pygame.K_a:
             self.ship.moving_left = True
+        elif event.key == pygame.K_SPACE:
+            self._fire_dual_lasers()
         elif event.key == pygame.K_q:
             sys.exit()
 
@@ -54,9 +59,16 @@ class AlienInvasion:
         elif event.key == pygame.K_a:
             self.ship.moving_left = False
 
+    def _fire_dual_lasers(self):
+        """Create a new dual laser and add it to the dual lasers group."""
+        new_dual_laser = DualLaser(self)
+        self.dual_lasers.add(new_dual_laser)
+
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
+        for laser in self.dual_lasers.sprites():
+            laser.draw_lasers()
         self.ship.blitme()
 
         pygame.display.flip()
