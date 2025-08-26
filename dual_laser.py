@@ -18,7 +18,7 @@ class DualLaser(Sprite):
         )
         self.left_rect.midtop = (
             ai_game.ship.rect.midtop[0] + 5,
-            ai_game.ship.rect.midtop[1] - 10,
+            ai_game.ship.rect.midtop[1],
         )
 
         # Create right laser rect
@@ -27,7 +27,7 @@ class DualLaser(Sprite):
         )
         self.right_rect.midtop = (
             ai_game.ship.rect.midtop[0] - 5,
-            ai_game.ship.rect.midtop[1] - 10,
+            ai_game.ship.rect.midtop[1],
         )
 
         # Store precise positions as floats for smooth movement
