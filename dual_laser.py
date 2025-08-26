@@ -30,17 +30,17 @@ class DualLaser(Sprite):
             ai_game.ship.rect.midtop[1],
         )
 
-        # Store precise positions as floats for smooth movement
+        # Store y-position as float
         self.left_y = float(self.left_rect.y)
         self.right_y = float(self.right_rect.y)
 
     def update(self):
         """Move the laser up the screen."""
-        # Update precise positions
+        # Update y-position
         self.left_y -= self.settings.dual_laser_speed
         self.right_y -= self.settings.dual_laser_speed
 
-        # Update rect positions
+        # Sync rect with y-position
         self.left_rect.y = int(self.left_y)
         self.right_rect.y = int(self.right_y)
 
