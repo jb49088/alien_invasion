@@ -28,6 +28,12 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self.dual_lasers.update()
+
+            # Remove lasers that have moved offscreen
+            for laser in self.dual_lasers.copy():
+                if laser.is_offscreen():
+                    self.dual_lasers.remove(laser)
+
             self._update_screen()
             self.clock.tick(60)
 
