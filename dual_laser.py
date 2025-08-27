@@ -17,7 +17,7 @@ class DualLaser(Sprite):
             0, 0, self.settings.dual_laser_width, self.settings.dual_laser_height
         )
         self.left_rect.midtop = (
-            ai_game.ship.rect.midtop[0] + 5,
+            ai_game.ship.rect.midtop[0] - 5,  # 5 pixels left of ship's midtop
             ai_game.ship.rect.midtop[1],
         )
 
@@ -26,11 +26,11 @@ class DualLaser(Sprite):
             0, 0, self.settings.dual_laser_width, self.settings.dual_laser_height
         )
         self.right_rect.midtop = (
-            ai_game.ship.rect.midtop[0] - 5,
+            ai_game.ship.rect.midtop[0] + 5,  # 5 pixels right of ship's midtop
             ai_game.ship.rect.midtop[1],
         )
 
-        # Store shared y-position as float
+        # Store shared y-position as float for smooth movement
         self.y = float(ai_game.ship.rect.midtop[1])
 
     def update(self):
@@ -46,7 +46,3 @@ class DualLaser(Sprite):
         """Draw both lasers to the screen."""
         pygame.draw.rect(self.screen, self.color, self.left_rect)
         pygame.draw.rect(self.screen, self.color, self.right_rect)
-
-    def is_offscreen(self):
-        """Check if the dual laser has moved offscreen."""
-        return self.left_rect.bottom <= 0 or self.right_rect.bottom <= 0

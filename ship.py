@@ -17,7 +17,7 @@ class Ship:
         # Position ship at bottom center
         self.rect.midbottom = self.screen_rect.midbottom
 
-        # Store x-position as float
+        # Store x-position as float for smooth movement
         self.x = float(self.rect.x)
 
         # Initialize movement flags

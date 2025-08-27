@@ -16,3 +16,4 @@ class Settings:
         self.dual_laser_width = 2
         self.dual_laser_height = 15
         self.dual_laser_color = (0, 196, 187)
+        self.dual_laser_limit = 3

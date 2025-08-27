@@ -27,13 +27,7 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
-            self.dual_lasers.update()
-
-            # Remove lasers that have moved offscreen
-            for laser in self.dual_lasers.copy():
-                if laser.is_offscreen():
-                    self.dual_lasers.remove(laser)
-
+            self._update_dual_lasers()
             self._update_screen()
             self.clock.tick(60)
 
@@ -67,8 +61,19 @@ class AlienInvasion:
 
     def _fire_dual_lasers(self):
         """Create a new dual laser and add it to the dual lasers group."""
-        new_dual_laser = DualLaser(self)
-        self.dual_lasers.add(new_dual_laser)
+        if len(self.dual_lasers) < self.settings.dual_laser_limit:
+            new_dual_laser = DualLaser(self)
+            self.dual_lasers.add(new_dual_laser)
+
+    def _update_dual_lasers(self):
+        """Update the position of dual lasers and get rid of old dual lasers."""
+        # Update dual laser positions
+        self.dual_lasers.update()
+
+        # Remove lasers that have moved offscreen
+        for laser in self.dual_lasers.copy():
+            if laser.left_rect.bottom <= 0 or laser.right_rect.bottom <= 0:
+                self.dual_lasers.remove(laser)
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
