@@ -5,6 +5,7 @@ import pygame
 from dual_laser import DualLaser
 from settings import Settings
 from ship import Ship
+from ufo import UFO
 
 
 class AlienInvasion:
@@ -21,6 +22,8 @@ class AlienInvasion:
         pygame.display.set_caption("alien_invasion")
         self.ship = Ship(self)
         self.dual_lasers = pygame.sprite.Group()
+        self.ufos = pygame.sprite.Group()
+        self._create_fleet()
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -75,12 +78,19 @@ class AlienInvasion:
             if laser.left_rect.bottom <= 0 or laser.right_rect.bottom <= 0:
                 self.dual_lasers.remove(laser)
 
+    def _create_fleet(self):
+        """Create the fleet of UFO's."""
+        # Make the UFO
+        ufo = UFO(self)
+        self.ufos.add(ufo)
+
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
         for laser in self.dual_lasers.sprites():
             laser.draw_lasers()
         self.ship.blitme()
+        self.ufos.draw(self.screen)
 
         pygame.display.flip()
 
