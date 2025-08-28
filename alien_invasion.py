@@ -87,11 +87,15 @@ class AlienInvasion:
 
         current_x = ufo_width
         while current_x < (self.settings.screen_width - 2 * ufo_width):
-            new_ufo = UFO(self)
-            new_ufo.x = current_x
-            new_ufo.rect.x = current_x
-            self.ufos.add(new_ufo)
+            self._create_ufo(current_x)
             current_x += 2 * ufo_width
+
+    def _create_ufo(self, x_position):
+        """Create a UFO and place it in the row."""
+        new_ufo = UFO(self)
+        new_ufo.x = x_position
+        new_ufo.rect.x = x_position
+        self.ufos.add(new_ufo)
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
