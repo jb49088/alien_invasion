@@ -80,9 +80,18 @@ class AlienInvasion:
 
     def _create_fleet(self):
         """Create the fleet of UFO's."""
-        # Make the UFO
+        # Create a UFO and keep doing so until there is no room.
+        # Spacing between UFO's is one UFO width.
         ufo = UFO(self)
-        self.ufos.add(ufo)
+        ufo_width = ufo.rect.width
+
+        current_x = ufo_width
+        while current_x < (self.settings.screen_width - 2 * ufo_width):
+            new_ufo = UFO(self)
+            new_ufo.x = current_x
+            new_ufo.rect.x = current_x
+            self.ufos.add(new_ufo)
+            current_x += 2 * ufo_width
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
