@@ -28,13 +28,14 @@ class AlienInvasion:
     def run_game(self):
         """Start the main loop for the game."""
         while True:
-            self._check_events()
+            self._event_loop()
             self.ship.update()
             self._update_dual_lasers()
+            self._update_ufos()
             self._update_screen()
-            self.clock.tick(60)
+            self.clock.tick(self.settings.framerate)
 
-    def _check_events(self):
+    def _event_loop(self):
         """Respond to keypresses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -78,6 +79,11 @@ class AlienInvasion:
             if laser.left_rect.bottom <= 0 or laser.right_rect.bottom <= 0:
                 self.dual_lasers.remove(laser)
 
+    def _update_ufos(self):
+        """Check if the fleet is at an edge, then update positions."""
+        self._check_fleet_edges()
+        self.ufos.update()
+
     def _create_fleet(self):
         """Create the fleet of UFO's."""
         # Create a UFO and keep doing so until there is no room
@@ -91,7 +97,7 @@ class AlienInvasion:
                 self._create_ufo(current_x, current_y)
                 current_x += 2 * ufo_width
 
-            # Finished a row: reset x value, and increment y value.
+            # Finished a row: reset x value, and increment y value
             current_x = ufo_width
             current_y += 2 * ufo_height
 
@@ -102,6 +108,19 @@ class AlienInvasion:
         new_ufo.rect.x = x_position
         new_ufo.rect.y = y_position
         self.ufos.add(new_ufo)
+
+    def _check_fleet_edges(self):
+        """Respond appropriately if any UFO's have reached the edge."""
+        for ufo in self.ufos.sprites():
+            if ufo.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """Drop the entire fleet and change the fleet's direction."""
+        for ufo in self.ufos.sprites():
+            ufo.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
