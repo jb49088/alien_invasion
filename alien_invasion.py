@@ -83,6 +83,10 @@ class AlienInvasion:
             if laser.left_rect.bottom <= 0 or laser.right_rect.bottom <= 0:
                 self.dual_lasers.remove(laser)
 
+        self._check_dual_lasers_ufo_collisions()
+
+    def _check_dual_lasers_ufo_collisions(self):
+        """Respond to laser-ufo collisions."""
         # Check for any lasers that have hit aliens.
         for laser in self.dual_lasers.copy():
             hit_ufos = []
