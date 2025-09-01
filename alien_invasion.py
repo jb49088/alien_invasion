@@ -97,6 +97,11 @@ class AlienInvasion:
                 for ufo in hit_ufos:
                     self.ufos.remove(ufo)
 
+        if not self.ufos:
+            # Destroy existing lasers and create new fleet.
+            self.dual_lasers.empty()
+            self._create_fleet()
+
     def _create_fleet(self):
         """Create the fleet of UFO's."""
         # Create a UFO and keep doing so until there is no room
