@@ -83,6 +83,20 @@ class AlienInvasion:
             if laser.left_rect.bottom <= 0 or laser.right_rect.bottom <= 0:
                 self.dual_lasers.remove(laser)
 
+        # Check for any lasers that have hit aliens.
+        for laser in self.dual_lasers.copy():
+            hit_ufos = []
+            for ufo in self.ufos.copy():
+                if laser.left_rect.colliderect(
+                    ufo.rect
+                ) or laser.right_rect.colliderect(ufo.rect):
+                    hit_ufos.append(ufo)
+
+            if hit_ufos:
+                self.dual_lasers.remove(laser)
+                for ufo in hit_ufos:
+                    self.ufos.remove(ufo)
+
     def _create_fleet(self):
         """Create the fleet of UFO's."""
         # Create a UFO and keep doing so until there is no room
