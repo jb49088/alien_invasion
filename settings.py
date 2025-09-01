@@ -8,7 +8,7 @@ class Settings:
 
         # Screen settings
         self.screen_width = 900
-        self.screen_height = 750
+        self.screen_height = 760
         self.bg_color = (0, 0, 0)
 
         # Ship settings
@@ -25,3 +25,8 @@ class Settings:
         self.ufo_speed = 1.0
         self.fleet_drop_speed = 10
         self.fleet_direction = 1  # 1 = right, -1 = left
+
+        # Star settings
+        self.star_width = 1
+        self.star_height = 1
+        self.star_color = (255, 255, 255)

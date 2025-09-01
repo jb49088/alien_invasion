@@ -1,10 +1,12 @@
 import sys
+from random import randint
 
 import pygame
 
 from dual_laser import DualLaser
 from settings import Settings
 from ship import Ship
+from star import Star
 from ufo import UFO
 
 
@@ -21,9 +23,11 @@ class AlienInvasion:
         )
         pygame.display.set_caption("alien_invasion")
         self.ship = Ship(self)
+        self.stars = pygame.sprite.Group()
         self.dual_lasers = pygame.sprite.Group()
         self.ufos = pygame.sprite.Group()
         self._create_fleet()
+        self._create_cluster()
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -79,11 +83,6 @@ class AlienInvasion:
             if laser.left_rect.bottom <= 0 or laser.right_rect.bottom <= 0:
                 self.dual_lasers.remove(laser)
 
-    def _update_ufos(self):
-        """Check if the fleet is at an edge, then update positions."""
-        self._check_fleet_edges()
-        self.ufos.update()
-
     def _create_fleet(self):
         """Create the fleet of UFO's."""
         # Create a UFO and keep doing so until there is no room
@@ -122,11 +121,42 @@ class AlienInvasion:
             ufo.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
 
+    def _update_ufos(self):
+        """Check if the fleet is at an edge, then update positions."""
+        self._check_fleet_edges()
+        self.ufos.update()
+
+    def _create_cluster(self):
+        """Create the cluster of stars."""
+        # Create stars in a grid pattern with 20-pixel spacing
+        current_x, current_y = 0, 0
+        while current_y < self.settings.screen_height:
+            while current_x < self.settings.screen_width:
+                self._create_star(current_x, current_y)
+                current_x += 20
+
+            # Finished a row: reset x value, and increment y value
+            current_x = 0
+            current_y += 20
+
+    def _create_star(self, x_position, y_position):
+        """Create a star with a random offset and place it in the cluster."""
+        new_star = Star(self)
+
+        random_x_offset = randint(-10, 10)
+        random_y_offset = randint(-10, 10)
+
+        new_star.rect.x = x_position + random_x_offset
+        new_star.rect.y = y_position + random_y_offset
+        self.stars.add(new_star)
+
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
         for laser in self.dual_lasers.sprites():
             laser.draw_lasers()
+        for star in self.stars.sprites():
+            star.draw_star()
         self.ship.blitme()
         self.ufos.draw(self.screen)
 
