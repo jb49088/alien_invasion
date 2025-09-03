@@ -95,6 +95,9 @@ class AlienInvasion:
             self._create_fleet()
             self.ship.center_ship()
 
+            # Hide the mouse cursor
+            pygame.mouse.set_visible(False)
+
     def _fire_dual_lasers(self):
         """Create a new dual laser and add it to the dual lasers group."""
         if len(self.dual_lasers) < self.settings.dual_laser_limit:
@@ -234,6 +237,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.game_active = False
+            pygame.mouse.set_visible(True)
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
