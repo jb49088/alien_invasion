@@ -20,9 +20,9 @@ loses a ship. If the player loses three ships, the game ends.
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
 Python                           7             83             76            268
-Markdown                         1             11              4             39
+Markdown                         1             11              4             40
 -------------------------------------------------------------------------------
-SUM:                             8             94             80            307
+SUM:                             8             94             80            308
 -------------------------------------------------------------------------------
 ```
 <!-- CODE_STATISTICS_END -->
@@ -52,3 +52,4 @@ alien_invasion
 ### Artwork Attributions
 
 - [Ship](https://opengameart.org/content/spaceship-by-parts) by [Skorpio](http://opengameart.org/users/skorpio)
+- [UFO](https://opengameart.org/content/spaceships-drakir) by [Carlos Alface](https://opengameart.org/users/carlos-alface)
