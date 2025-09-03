@@ -1,9 +1,11 @@
 import sys
 from random import randint
+from time import sleep
 
 import pygame
 
 from dual_laser import DualLaser
+from game_stats import GameStats
 from settings import Settings
 from ship import Ship
 from star import Star
@@ -21,6 +23,7 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height)
         )
+        self.stats = GameStats(self)
         pygame.display.set_caption("alien_invasion")
         self.ship = Ship(self)
         self.stars = pygame.sprite.Group()
@@ -149,6 +152,10 @@ class AlienInvasion:
         self._check_fleet_edges()
         self.ufos.update()
 
+        # Look for ufo-ship collisions
+        if pygame.sprite.spritecollideany(self.ship, self.ufos):  # type: ignore
+            self._ship_hit()
+
     def _create_cluster(self):
         """Create the cluster of stars."""
         # Create stars in a grid pattern with 20-pixel spacing
@@ -172,6 +179,22 @@ class AlienInvasion:
         new_star.rect.x = x_position + random_x_offset
         new_star.rect.y = y_position + random_y_offset
         self.stars.add(new_star)
+
+    def _ship_hit(self):
+        """Respond to the ship being hit by a UFO."""
+        # Decrement ships left
+        self.stats.ships_left -= 1
+
+        # Get rid of any remaining bullets and aliens
+        self.dual_lasers.empty()
+        self.ufos.empty()
+
+        # Create a new fleet and center the ship
+        self._create_fleet()
+        self.ship.center_ship()
+
+        # Pause
+        sleep(0.5)
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""

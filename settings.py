@@ -13,6 +13,7 @@ class Settings:
 
         # Ship settings
         self.ship_speed = 1.5
+        self.ship_limit = 3
 
         # Laser settings
         self.dual_laser_speed = 2.5
