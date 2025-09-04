@@ -12,22 +12,41 @@ class Settings:
         self.bg_color = (0, 0, 0)
 
         # Ship settings
-        self.ship_speed = 1.5
         self.ship_limit = 3
 
         # Laser settings
-        self.dual_laser_speed = 2.5
         self.dual_laser_width = 2
         self.dual_laser_height = 15
         self.dual_laser_color = (102, 255, 102)
         self.dual_laser_limit = 3
 
         # UFO settings
-        self.ufo_speed = 1.0
         self.fleet_drop_speed = 10
-        self.fleet_direction = 1  # 1 = right, -1 = left
 
         # Star settings
         self.star_width = 1
         self.star_height = 1
         self.star_color = (255, 255, 255)
+
+        # How quickly the game speeds up
+        self.speedup_scale = 1.1
+
+        self.initialize_dynamic_settings()
+
+    def initialize_dynamic_settings(self):
+        """Initialize settings that change throughout the game"""
+        # Ship settings
+        self.ship_speed = 3.0
+
+        # Laser settings
+        self.dual_laser_speed = 5.0
+
+        # UFO settings
+        self.ufo_speed = 2.0
+        self.fleet_direction = 1  # 1 = right, -1 = left
+
+    def increase_speed(self):
+        """Increase speed settings."""
+        self.ship_speed *= self.speedup_scale
+        self.dual_laser_speed *= self.speedup_scale
+        self.ufo_speed *= self.speedup_scale

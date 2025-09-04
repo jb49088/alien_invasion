@@ -82,6 +82,9 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _start_game(self):
+        # Reset the game settings.
+        self.settings.initialize_dynamic_settings()
+
         # Reset the game statistics.
         self.stats.reset_stats()
         self.game_active = True
@@ -141,6 +144,7 @@ class AlienInvasion:
             # Destroy existing lasers and create new fleet.
             self.dual_lasers.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _create_fleet(self):
         """Create the fleet of UFO's."""
