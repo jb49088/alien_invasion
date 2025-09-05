@@ -293,29 +293,34 @@ class AlienInvasion:
             self.game_active = False
             pygame.mouse.set_visible(True)
 
+    def _draw_difficulty_indicator(self, button):
+        check_rect = pygame.Rect(button.rect.right - 15, button.rect.top + 5, 10, 10)
+        pygame.draw.rect(self.screen, (0, 0, 0), check_rect)
+
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
+
+        # Draw stars
         for star in self.stars.sprites():
             star.draw_star()
+
         if self.game_active:
+            # Draw lasers, UFO's and ship
             for laser in self.dual_lasers.sprites():
                 laser.draw_lasers()
             self.ufos.draw(self.screen)
             self.ship.blitme()
-        if not self.game_active:
+        else:
+            # Draw play button
             self.play_button.draw_button()
+
+            # Draw difficulty buttons
+            speed_mapping = {"Easy": 1.1, "Medium": 1.2, "Hard": 1.3}
             for button in self.difficulty_buttons:
                 button.draw_button()
-                if (
-                    (button.msg == "Easy" and self.settings.speedup_scale == 1.1)
-                    or (button.msg == "Medium" and self.settings.speedup_scale == 1.2)
-                    or (button.msg == "Hard" and self.settings.speedup_scale == 1.3)
-                ):
-                    check_rect = pygame.Rect(
-                        button.rect.right - 15, button.rect.top + 5, 10, 10
-                    )
-                    pygame.draw.rect(self.screen, (0, 0, 0), check_rect)
+                if speed_mapping.get(button.msg) == self.settings.speedup_scale:
+                    self._draw_difficulty_indicator(button)
 
         pygame.display.flip()
 
