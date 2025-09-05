@@ -23,7 +23,6 @@ class Button:
 
         # Set the dimensions and properties of the button
         self.msg = msg
-        self.active = active
         self.width, self.height = width, height
         self.button_color = button_color
         self.text_color = text_color
@@ -52,7 +51,3 @@ class Button:
         """Draw blank button and then draw message."""
         self.screen.fill(self.button_color, self.rect)
         self.screen.blit(self.msg_image, self.msg_image_rect)
-
-        if self.active:
-            check_rect = pygame.Rect(self.rect.right - 15, self.rect.top + 5, 10, 10)
-            pygame.draw.rect(self.screen, (0, 0, 0), check_rect)

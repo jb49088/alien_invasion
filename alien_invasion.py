@@ -33,6 +33,7 @@ class AlienInvasion:
         self._create_fleet()
         self._create_cluster()
         self.game_active = False
+        self.active_difficulty = "Easy"
         self.play_button = Button(
             self,
             msg="Play",
@@ -67,8 +68,6 @@ class AlienInvasion:
             )
 
             self.difficulty_buttons.append(button)
-
-        self._sync_difficulty_buttons()
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -146,24 +145,13 @@ class AlienInvasion:
         """Check if a difficulty button was clicked and set speed multiplier."""
         for button in self.difficulty_buttons:
             if button.rect.collidepoint(mouse_pos):
+                self.active_difficulty = button.msg
                 if button.msg == "Easy":
                     self.settings.speedup_scale = 1.1
                 elif button.msg == "Medium":
                     self.settings.speedup_scale = 1.2
                 elif button.msg == "Hard":
                     self.settings.speedup_scale = 1.3
-
-                self._sync_difficulty_buttons()
-
-    def _sync_difficulty_buttons(self):
-        """Set the active button based on current speedup_scale."""
-        for button in self.difficulty_buttons:
-            if button.msg == "Easy":
-                button.active = self.settings.speedup_scale == 1.1
-            elif button.msg == "Medium":
-                button.active = self.settings.speedup_scale == 1.2
-            elif button.msg == "Hard":
-                button.active = self.settings.speedup_scale == 1.3
 
     def _fire_dual_lasers(self):
         """Create a new dual laser and add it to the dual lasers group."""
@@ -321,6 +309,11 @@ class AlienInvasion:
             self.play_button.draw_button()
             for button in self.difficulty_buttons:
                 button.draw_button()
+                if button.msg == self.active_difficulty:
+                    check_rect = pygame.Rect(
+                        button.rect.right - 15, button.rect.top + 5, 10, 10
+                    )
+                    pygame.draw.rect(self.screen, (0, 0, 0), check_rect)
 
         pygame.display.flip()
 

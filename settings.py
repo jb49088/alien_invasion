@@ -29,7 +29,7 @@ class Settings:
         self.star_color = (255, 255, 255)
 
         # How quickly the game speeds up
-        self.speedup_scale = 1.1
+        self.speedup_scale = 1.2
 
         self.initialize_dynamic_settings()
 
