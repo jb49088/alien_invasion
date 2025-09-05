@@ -33,7 +33,42 @@ class AlienInvasion:
         self._create_fleet()
         self._create_cluster()
         self.game_active = False
-        self.play_button = Button(self, "Play")
+        self.play_button = Button(
+            self,
+            msg="Play",
+            width=200,
+            height=50,
+            button_color=(102, 255, 102),
+            text_color=(0, 0, 0),
+            font_size=48,
+        )
+
+        difficulty_data = [
+            ("Easy", (102, 255, 102)),
+            ("Medium", (255, 165, 0)),
+            ("Hard", (255, 0, 0)),
+        ]
+
+        start_y = 450
+        spacing = 50
+
+        self.difficulty_buttons = []
+
+        for i, (label, color) in enumerate(difficulty_data):
+            button = Button(
+                self,
+                msg=label,
+                width=200,
+                height=30,
+                button_color=color,
+                text_color=(0, 0, 0),
+                font_size=30,
+                centery=start_y + i * spacing,
+            )
+
+            self.difficulty_buttons.append(button)
+
+        self._sync_difficulty_buttons()
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -56,6 +91,7 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                self._check_difficulty_buttons(mouse_pos)
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
@@ -105,6 +141,29 @@ class AlienInvasion:
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.game_active:
             self._start_game()
+
+    def _check_difficulty_buttons(self, mouse_pos):
+        """Check if a difficulty button was clicked and set speed multiplier."""
+        for button in self.difficulty_buttons:
+            if button.rect.collidepoint(mouse_pos):
+                if button.msg == "Easy":
+                    self.settings.speedup_scale = 1.1
+                elif button.msg == "Medium":
+                    self.settings.speedup_scale = 1.2
+                elif button.msg == "Hard":
+                    self.settings.speedup_scale = 1.3
+
+                self._sync_difficulty_buttons()
+
+    def _sync_difficulty_buttons(self):
+        """Set the active button based on current speedup_scale."""
+        for button in self.difficulty_buttons:
+            if button.msg == "Easy":
+                button.active = self.settings.speedup_scale == 1.1
+            elif button.msg == "Medium":
+                button.active = self.settings.speedup_scale == 1.2
+            elif button.msg == "Hard":
+                button.active = self.settings.speedup_scale == 1.3
 
     def _fire_dual_lasers(self):
         """Create a new dual laser and add it to the dual lasers group."""
@@ -251,14 +310,17 @@ class AlienInvasion:
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
-        for laser in self.dual_lasers.sprites():
-            laser.draw_lasers()
         for star in self.stars.sprites():
             star.draw_star()
-        self.ship.blitme()
-        self.ufos.draw(self.screen)
+        if self.game_active:
+            for laser in self.dual_lasers.sprites():
+                laser.draw_lasers()
+            self.ufos.draw(self.screen)
+            self.ship.blitme()
         if not self.game_active:
             self.play_button.draw_button()
+            for button in self.difficulty_buttons:
+                button.draw_button()
 
         pygame.display.flip()
 
