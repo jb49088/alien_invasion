@@ -33,7 +33,6 @@ class AlienInvasion:
         self._create_fleet()
         self._create_cluster()
         self.game_active = False
-        self.active_difficulty = "Easy"
         self.play_button = Button(
             self,
             msg="Play",
@@ -145,7 +144,6 @@ class AlienInvasion:
         """Check if a difficulty button was clicked and set speed multiplier."""
         for button in self.difficulty_buttons:
             if button.rect.collidepoint(mouse_pos):
-                self.active_difficulty = button.msg
                 if button.msg == "Easy":
                     self.settings.speedup_scale = 1.1
                 elif button.msg == "Medium":
@@ -309,7 +307,11 @@ class AlienInvasion:
             self.play_button.draw_button()
             for button in self.difficulty_buttons:
                 button.draw_button()
-                if button.msg == self.active_difficulty:
+                if (
+                    (button.msg == "Easy" and self.settings.speedup_scale == 1.1)
+                    or (button.msg == "Medium" and self.settings.speedup_scale == 1.2)
+                    or (button.msg == "Hard" and self.settings.speedup_scale == 1.3)
+                ):
                     check_rect = pygame.Rect(
                         button.rect.right - 15, button.rect.top + 5, 10, 10
                     )
