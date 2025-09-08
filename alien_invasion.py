@@ -7,6 +7,7 @@ import pygame
 from button import Button
 from dual_laser import DualLaser
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from settings import Settings
 from ship import Ship
 from star import Star
@@ -24,8 +25,9 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height)
         )
-        self.stats = GameStats(self)
         pygame.display.set_caption("alien_invasion")
+        self.stats = GameStats(self)
+        self.scoreboard = Scoreboard(self)
         self.ship = Ship(self)
         self.stars = pygame.sprite.Group()
         self.dual_lasers = pygame.sprite.Group()
@@ -116,12 +118,16 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _start_game(self):
-        # Reset the game settings.
+        self.game_active = True
+
+        # Reset the game settings
         self.settings.initialize_dynamic_settings()
 
-        # Reset the game statistics.
+        # Reset the game statistics
         self.stats.reset_stats()
-        self.game_active = True
+
+        # Reset the scoreboard
+        self.scoreboard.prep_score()
 
         # Get rid of any remaining lasers and UFO's
         self.dual_lasers.empty()
@@ -184,6 +190,9 @@ class AlienInvasion:
                 self.dual_lasers.remove(laser)
                 for ufo in hit_ufos:
                     self.ufos.remove(ufo)
+                    self.stats.score += self.settings.ufo_points
+                self.scoreboard.prep_score()
+                self.scoreboard.check_high_score()
 
         if not self.ufos:
             # Destroy existing lasers and create new fleet.
@@ -306,10 +315,11 @@ class AlienInvasion:
             star.draw_star()
 
         if self.game_active:
-            # Draw lasers, UFO's and ship
+            # Draw lasers, UFO's, ship and scoreboard
             for laser in self.dual_lasers.sprites():
                 laser.draw_lasers()
             self.ufos.draw(self.screen)
+            self.scoreboard.show_score()
             self.ship.blitme()
         else:
             # Draw play button

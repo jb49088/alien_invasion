@@ -19,10 +19,10 @@ loses a ship. If the player loses three ships, the game ends.
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Python                           8            114            101            382
+Python                           9            130            114            430
 Markdown                         1             11              4             41
 -------------------------------------------------------------------------------
-SUM:                             9            125            105            423
+SUM:                            10            141            118            471
 -------------------------------------------------------------------------------
 ```
 <!-- CODE_STATISTICS_END -->
@@ -41,12 +41,13 @@ alien_invasion
 │   ├── ship.png
 │   └── ufo.png
 ├── README.md
+├── scoreboard.py
 ├── settings.py
 ├── ship.py
 ├── star.py
 └── ufo.py
 
-2 directories, 11 files
+2 directories, 12 files
 ```
 <!-- PROJECT_STRUCTURE_END -->
 
