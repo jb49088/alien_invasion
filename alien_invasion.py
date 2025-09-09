@@ -132,6 +132,9 @@ class AlienInvasion:
         # Reset the level
         self.scoreboard.prep_level()
 
+        # Reset the ship lives
+        self.scoreboard.prep_ships()
+
         # Get rid of any remaining lasers and UFO's
         self.dual_lasers.empty()
         self.ufos.empty()
@@ -254,7 +257,7 @@ class AlienInvasion:
         if pygame.sprite.spritecollideany(self.ship, self.ufos):  # type: ignore
             self._ship_hit()
 
-        # Look for aliens hitthing the bottom of the screen
+        # Look for aliens hitting the bottom of the screen
         self._check_ufos_bottom()
 
     def _check_ufos_bottom(self):
@@ -294,6 +297,7 @@ class AlienInvasion:
         if self.stats.ships_left > 0:
             # Decrement ships left
             self.stats.ships_left -= 1
+            self.scoreboard.prep_ships()
 
             # Get rid of any remaining bullets and aliens
             self.dual_lasers.empty()
