@@ -159,6 +159,7 @@ class AlienInvasion:
                     self.ufos.remove(ufo)
                     self.stats.score += self.settings.ufo_points
                 self.hud.prep_score()
+                self.hud.check_high_score()
 
         if not self.ufos:
             # Destroy existing lasers and create new fleet.
