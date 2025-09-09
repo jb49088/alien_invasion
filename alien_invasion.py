@@ -198,7 +198,6 @@ class AlienInvasion:
                     self.ufos.remove(ufo)
                     self.stats.score += self.settings.ufo_points
                 self.scoreboard.prep_score()
-                self.scoreboard.check_high_score()
 
         if not self.ufos:
             # Destroy existing lasers and create new fleet.
@@ -272,8 +271,8 @@ class AlienInvasion:
         """Create the cluster of stars."""
         # Create stars in a grid pattern with 20-pixel spacing
         current_x, current_y = 0, 0
-        while current_y < self.settings.screen_height:
-            while current_x < self.settings.screen_width:
+        while current_y <= self.settings.screen_height:
+            while current_x <= self.settings.screen_width:
                 self._create_star(current_x, current_y)
                 current_x += 20
 

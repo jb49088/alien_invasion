@@ -7,8 +7,8 @@ class Settings:
         self.framerate = 60
 
         # Screen settings
-        self.screen_width = 900
-        self.screen_height = 750
+        self.screen_width = 901
+        self.screen_height = 761
         self.bg_color = (0, 0, 0)
 
         # Ship settings
