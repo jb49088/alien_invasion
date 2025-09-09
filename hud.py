@@ -4,7 +4,7 @@ from pygame.sprite import Group
 from ship import Ship
 
 
-class Scoreboard:
+class HUD:
     """A class to report scoring information."""
 
     def __init__(self, ai_game):
@@ -59,7 +59,7 @@ class Scoreboard:
         for ship_number in range(self.stats.ships_left):
             ship = Ship(self.ai_game)
 
-            # Scale the ship image down for the scoreboard
+            # Scale the ship image down for the hud
             scale_factor = 0.6
             ship.image = pygame.transform.scale(
                 ship.image,
@@ -74,7 +74,7 @@ class Scoreboard:
             ship.rect.y = 10
             self.ships.add(ship)
 
-    def show_score(self):
+    def draw_hud(self):
         """Draw scores, level, and ships to the screen."""
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.level_image, self.level_rect)

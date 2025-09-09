@@ -3,6 +3,9 @@ class Settings:
 
     def __init__(self):
         """Initialize the game's settings."""
+        # Title
+        self.title = "alien_invasion"
+
         # Frame rate
         self.framerate = 60
 

@@ -7,7 +7,8 @@ import pygame
 from button import Button
 from dual_laser import DualLaser
 from game_stats import GameStats
-from scoreboard import Scoreboard
+from hud import HUD
+from menu import Menu
 from settings import Settings
 from ship import Ship
 from star import Star
@@ -25,9 +26,10 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height)
         )
-        pygame.display.set_caption("alien_invasion")
+        pygame.display.set_caption(self.settings.title)
         self.stats = GameStats(self)
-        self.scoreboard = Scoreboard(self)
+        self.menu = Menu(self)
+        self.hud = HUD(self)
         self.ship = Ship(self)
         self.stars = pygame.sprite.Group()
         self.dual_lasers = pygame.sprite.Group()
@@ -127,13 +129,13 @@ class AlienInvasion:
         self.stats.reset_stats()
 
         # Reset the scoreboard
-        self.scoreboard.prep_score()
+        self.hud.prep_score()
 
         # Reset the level
-        self.scoreboard.prep_level()
+        self.hud.prep_level()
 
         # Reset the ship lives
-        self.scoreboard.prep_ships()
+        self.hud.prep_ships()
 
         # Get rid of any remaining lasers and UFO's
         self.dual_lasers.empty()
@@ -197,7 +199,7 @@ class AlienInvasion:
                 for ufo in hit_ufos:
                     self.ufos.remove(ufo)
                     self.stats.score += self.settings.ufo_points
-                self.scoreboard.prep_score()
+                self.hud.prep_score()
 
         if not self.ufos:
             # Destroy existing lasers and create new fleet.
@@ -207,7 +209,7 @@ class AlienInvasion:
 
             # Increase level
             self.stats.level += 1
-            self.scoreboard.prep_level()
+            self.hud.prep_level()
 
     def _create_fleet(self):
         """Create the fleet of UFO's."""
@@ -217,7 +219,7 @@ class AlienInvasion:
         ufo_width, ufo_height = ufo.rect.size
 
         current_x, current_y = ufo_width, ufo_height * 2
-        while current_y < (self.settings.screen_height - 6 * ufo_height):
+        while current_y < (self.settings.screen_height - 5 * ufo_height):
             while current_x < (self.settings.screen_width - 2 * ufo_width):
                 self._create_ufo(current_x, current_y)
                 current_x += 2 * ufo_width
@@ -271,8 +273,8 @@ class AlienInvasion:
         """Create the cluster of stars."""
         # Create stars in a grid pattern with 20-pixel spacing
         current_x, current_y = 0, 0
-        while current_y <= self.settings.screen_height:
-            while current_x <= self.settings.screen_width:
+        while current_y < self.settings.screen_height:
+            while current_x < self.settings.screen_width:
                 self._create_star(current_x, current_y)
                 current_x += 20
 
@@ -296,7 +298,7 @@ class AlienInvasion:
         if self.stats.ships_left > 0:
             # Decrement ships left
             self.stats.ships_left -= 1
-            self.scoreboard.prep_ships()
+            self.hud.prep_ships()
 
             # Get rid of any remaining bullets and aliens
             self.dual_lasers.empty()
@@ -329,7 +331,7 @@ class AlienInvasion:
             for laser in self.dual_lasers.sprites():
                 laser.draw_lasers()
             self.ufos.draw(self.screen)
-            self.scoreboard.show_score()
+            self.hud.draw_hud()
             self.ship.blitme()
         else:
             # Draw play button
@@ -341,6 +343,8 @@ class AlienInvasion:
                 button.draw_button()
                 if speed_mapping.get(button.msg) == self.settings.speedup_scale:
                     self._draw_difficulty_indicator(button)
+
+            self.menu.draw_menu()
 
         pygame.display.flip()
 
