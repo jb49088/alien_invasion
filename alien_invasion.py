@@ -129,6 +129,9 @@ class AlienInvasion:
         # Reset the scoreboard
         self.scoreboard.prep_score()
 
+        # Reset the level
+        self.scoreboard.prep_level()
+
         # Get rid of any remaining lasers and UFO's
         self.dual_lasers.empty()
         self.ufos.empty()
@@ -200,6 +203,10 @@ class AlienInvasion:
             self._create_fleet()
             self.settings.increase_speed()
 
+            # Increase level
+            self.stats.level += 1
+            self.scoreboard.prep_level()
+
     def _create_fleet(self):
         """Create the fleet of UFO's."""
         # Create a UFO and keep doing so until there is no room
@@ -207,8 +214,8 @@ class AlienInvasion:
         ufo = UFO(self)
         ufo_width, ufo_height = ufo.rect.size
 
-        current_x, current_y = ufo_width, ufo_height
-        while current_y < (self.settings.screen_height - 5 * ufo_height):
+        current_x, current_y = ufo_width, ufo_height * 2
+        while current_y < (self.settings.screen_height - 6 * ufo_height):
             while current_x < (self.settings.screen_width - 2 * ufo_width):
                 self._create_ufo(current_x, current_y)
                 current_x += 2 * ufo_width
