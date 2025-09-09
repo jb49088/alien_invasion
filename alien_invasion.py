@@ -4,7 +4,6 @@ from time import sleep
 
 import pygame
 
-from button import Button
 from dual_laser import DualLaser
 from game_stats import GameStats
 from hud import HUD
@@ -37,40 +36,6 @@ class AlienInvasion:
         self._create_fleet()
         self._create_cluster()
         self.game_active = False
-        self.play_button = Button(
-            self,
-            msg="Play",
-            width=200,
-            height=50,
-            button_color=(102, 255, 102),
-            text_color=(0, 0, 0),
-            font_size=48,
-        )
-
-        difficulty_data = [
-            ("Easy", (102, 255, 102)),
-            ("Medium", (255, 165, 0)),
-            ("Hard", (255, 0, 0)),
-        ]
-
-        start_y = 450
-        spacing = 50
-
-        self.difficulty_buttons = []
-
-        for i, (label, color) in enumerate(difficulty_data):
-            button = Button(
-                self,
-                msg=label,
-                width=200,
-                height=30,
-                button_color=color,
-                text_color=(0, 0, 0),
-                font_size=30,
-                centery=start_y + i * spacing,
-            )
-
-            self.difficulty_buttons.append(button)
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -92,8 +57,7 @@ class AlienInvasion:
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                self._check_play_button(mouse_pos)
-                self._check_difficulty_buttons(mouse_pos)
+                self._check_buttons(mouse_pos)
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
@@ -118,6 +82,18 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_a:
             self.ship.moving_left = False
+
+    def _check_buttons(self, mouse_pos):
+        """Check for button clicks and handle them."""
+        if not self.game_active:
+            # Check play button
+            if self.menu.check_play_button(mouse_pos):
+                self._start_game()
+
+            # Check difficulty buttons
+            difficulty_speed = self.menu.check_difficulty_buttons(mouse_pos)
+            if difficulty_speed:
+                self.settings.speedup_scale = difficulty_speed
 
     def _start_game(self):
         self.game_active = True
@@ -147,23 +123,6 @@ class AlienInvasion:
 
         # Hide the mouse cursor
         pygame.mouse.set_visible(False)
-
-    def _check_play_button(self, mouse_pos):
-        """Start a new game when the player clicks Play."""
-        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if button_clicked and not self.game_active:
-            self._start_game()
-
-    def _check_difficulty_buttons(self, mouse_pos):
-        """Check if a difficulty button was clicked and set speed multiplier."""
-        for button in self.difficulty_buttons:
-            if button.rect.collidepoint(mouse_pos):
-                if button.msg == "Easy":
-                    self.settings.speedup_scale = 1.1
-                elif button.msg == "Medium":
-                    self.settings.speedup_scale = 1.2
-                elif button.msg == "Hard":
-                    self.settings.speedup_scale = 1.3
 
     def _fire_dual_lasers(self):
         """Create a new dual laser and add it to the dual lasers group."""
@@ -314,10 +273,6 @@ class AlienInvasion:
             self.game_active = False
             pygame.mouse.set_visible(True)
 
-    def _draw_difficulty_indicator(self, button):
-        check_rect = pygame.Rect(button.rect.right - 15, button.rect.top + 5, 10, 10)
-        pygame.draw.rect(self.screen, (0, 0, 0), check_rect)
-
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
@@ -334,16 +289,7 @@ class AlienInvasion:
             self.hud.draw_hud()
             self.ship.blitme()
         else:
-            # Draw play button
-            self.play_button.draw_button()
-
-            # Draw difficulty buttons
-            speed_mapping = {"Easy": 1.1, "Medium": 1.2, "Hard": 1.3}
-            for button in self.difficulty_buttons:
-                button.draw_button()
-                if speed_mapping.get(button.msg) == self.settings.speedup_scale:
-                    self._draw_difficulty_indicator(button)
-
+            # Menu handles drawing all buttons and menu elements
             self.menu.draw_menu()
 
         pygame.display.flip()
