@@ -170,14 +170,17 @@ class AlienInvasion:
                 self.hud.check_high_score()
 
         if not self.ufos:
-            # Destroy existing lasers and create new fleet.
-            self.dual_lasers.empty()
-            self._create_fleet()
-            self.settings.increase_speed()
+            self._start_new_level()
 
-            # Increase level
-            self.stats.level += 1
-            self.hud.prep_level()
+    def _start_new_level(self):
+        # Destroy existing lasers and create new fleet.
+        self.dual_lasers.empty()
+        self._create_fleet()
+        self.settings.increase_speed()
+
+        # Increase level
+        self.stats.level += 1
+        self.hud.prep_level()
 
     def _create_fleet(self):
         """Create the fleet of UFO's."""
