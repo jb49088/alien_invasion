@@ -1,13 +1,13 @@
 
 ### alien_invasion
 
-In alien_invasion, the player controls a rocket ship that appears
+In alien_invasion, the player controls a spaceship that appears
 at the bottom center of the screen. The player can move the ship
-right and left using a and d and shoot bullets using the
-spacebar. When the game begins, a fleet of aliens fills the sky
+right and left using a and d and shoot lasers using the
+spacebar. When the game begins, a fleet of UFO's fills the sky
 and moves across and down the screen. The player shoots and
-destroys the aliens. If the player destroys all the aliens, a new fleet
-appears that moves faster than the previous fleet. If any alien hits
+destroys the UFO's. If the player destroys all the UFO's, a new fleet
+appears that moves faster than the previous fleet. If any UFO hits
 the player's ship or reaches the bottom of the screen, the player
 loses a ship. If the player loses three ships, the game ends.
 
@@ -20,10 +20,10 @@ loses a ship. If the player loses three ships, the game ends.
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
 Python                          11            186            162            622
-Markdown                         1             11              4             46
+Markdown                         1             14              4             50
 JSON                             1              0              0              1
 -------------------------------------------------------------------------------
-SUM:                            13            197            166            669
+SUM:                            13            200            166            673
 -------------------------------------------------------------------------------
 ```
 <!-- CODE_STATISTICS_END -->
