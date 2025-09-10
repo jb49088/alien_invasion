@@ -19,6 +19,9 @@ class HUD:
         self.text_color = (102, 255, 102)
         self.font = pygame.font.SysFont(None, 48)
 
+        self._prep_images()
+
+    def _prep_images(self):
         # Prepare the initial score image
         self.prep_score()
 
