@@ -10,11 +10,11 @@ class ShipLasers(Sprite):
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
-        self.color = self.settings.dual_laser_color
+        self.color = self.settings.ship_laser_color
 
         # Create left laser rect
         self.left_rect = pygame.Rect(
-            0, 0, self.settings.dual_laser_width, self.settings.dual_laser_height
+            0, 0, self.settings.laser_width, self.settings.laser_height
         )
         self.left_rect.midtop = (
             ai_game.ship.rect.midtop[0] - 5,  # 5 pixels left of ship's midtop
@@ -23,7 +23,7 @@ class ShipLasers(Sprite):
 
         # Create right laser rect
         self.right_rect = pygame.Rect(
-            0, 0, self.settings.dual_laser_width, self.settings.dual_laser_height
+            0, 0, self.settings.laser_width, self.settings.laser_height
         )
         self.right_rect.midtop = (
             ai_game.ship.rect.midtop[0] + 5,  # 5 pixels right of ship's midtop
@@ -36,7 +36,7 @@ class ShipLasers(Sprite):
     def update(self):
         """Move the lasers up the screen."""
         # Update y-position
-        self.y -= self.settings.dual_laser_speed
+        self.y -= self.settings.ship_laser_speed
 
         # Sync rect with y-position
         self.left_rect.y = int(self.y)

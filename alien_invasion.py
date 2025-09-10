@@ -1,7 +1,7 @@
 import json
 import sys
 from pathlib import Path
-from random import randint
+from random import choice, randint
 from time import sleep
 
 import pygame
@@ -14,6 +14,7 @@ from ship import Ship
 from ship_lasers import ShipLasers
 from star import Star
 from ufo import UFO
+from ufo_laser import UFOLaser
 
 
 class AlienInvasion:
@@ -33,9 +34,11 @@ class AlienInvasion:
         self.menu = Menu(self)
         self.hud = HUD(self)
         self.ship = Ship(self)
-        self.stars = pygame.sprite.Group()
         self.ship_lasers = pygame.sprite.Group()
         self.ufos = pygame.sprite.Group()
+        self.ufo_lasers = pygame.sprite.Group()
+        self.ufo_fire_counter = 0
+        self.stars = pygame.sprite.Group()
         self._create_fleet()
         self._create_cluster()
         self.game_active = False
@@ -48,7 +51,9 @@ class AlienInvasion:
             if self.game_active:
                 self.ship.update()
                 self._update_ship_lasers()
+                self._update_ufo_lasers()
                 self._update_ufos()
+                self._handle_ufo_fire_counter()
 
             self._update_screen()
             self.clock.tick(self.settings.framerate)
@@ -132,9 +137,38 @@ class AlienInvasion:
         # Hide the mouse cursor
         pygame.mouse.set_visible(False)
 
+    def _handle_ufo_fire_counter(self):
+        self.ufo_fire_counter += 1
+        if self.ufo_fire_counter >= self.settings.ufo_fire_interval:
+            self._fire_ufo_laser()
+            self.ufo_fire_counter = 0
+
+    def _fire_ufo_laser(self):
+        """Create new UFO laser and add it to the UFO lasers group."""
+        chosen_ufo = choice(self._get_bottom_most_ufos())
+
+        new_ufo_laser = UFOLaser(self, chosen_ufo)
+        self.ufo_lasers.add(new_ufo_laser)
+
+    def _update_ufo_lasers(self):
+        """Update the position of UFO lasers and get id of old lasers."""
+        self.ufo_lasers.update()
+
+        # Remove lasers that have moved offscreen
+        for laser in self.ufo_lasers.copy():
+            if laser.laser_rect.top >= self.settings.screen_height:
+                self.ufo_lasers.remove(laser)
+
+        self._check_ufo_laser_ship_collisions()
+
+    def _check_ufo_laser_ship_collisions(self):
+        for laser in self.ufo_lasers:
+            if laser.laser_rect.colliderect(self.ship.rect):
+                self._ship_hit()
+
     def _fire_ship_lasers(self):
         """Create new ship lasers and add them to the ship lasers group."""
-        if len(self.ship_lasers) < self.settings.dual_laser_limit:
+        if len(self.ship_lasers) < self.settings.ship_laser_limit:
             new_dual_laser = ShipLasers(self)
             self.ship_lasers.add(new_dual_laser)
 
@@ -175,6 +209,7 @@ class AlienInvasion:
     def _start_new_level(self):
         # Destroy existing lasers and create new fleet.
         self.ship_lasers.empty()
+        self.ufo_lasers.empty()
         self._create_fleet()
         self.settings.increase_speed()
 
@@ -206,6 +241,18 @@ class AlienInvasion:
         new_ufo.rect.x = x_position
         new_ufo.rect.y = y_position
         self.ufos.add(new_ufo)
+
+    def _get_bottom_most_ufos(self):
+        """Return a list of the bottom-most UFO's in each column."""
+        bottom_ufos = {}
+        for ufo in self.ufos:
+            column = ufo.rect.x
+            # If this column is emply or this UFO is lower, replace it
+            if column not in bottom_ufos or ufo.rect.y > bottom_ufos[column].rect.y:
+                bottom_ufos[column] = ufo
+
+        # Return only the UFO's one per column
+        return list(bottom_ufos.values())
 
     def _check_fleet_edges(self):
         """Respond appropriately if any UFO's have reached the edge."""
@@ -271,8 +318,9 @@ class AlienInvasion:
             self.stats.ships_left -= 1
             self.hud.prep_ships()
 
-            # Get rid of any remaining bullets and aliens
+            # Get rid of any remaining laser and UFO's
             self.ship_lasers.empty()
+            self.ufo_lasers.empty()
             self.ufos.empty()
 
             # Create a new fleet and center the ship
@@ -294,12 +342,14 @@ class AlienInvasion:
             star.draw_star()
 
         if self.game_active:
-            # Draw lasers, UFO's, ship and scoreboard
+            # Draw lasers, UFO's, ship and the HUD
+            self.hud.draw_hud()
+            self.ship.blitme()
             for laser in self.ship_lasers.sprites():
                 laser.draw_lasers()
             self.ufos.draw(self.screen)
-            self.hud.draw_hud()
-            self.ship.blitme()
+            for laser in self.ufo_lasers.sprites():
+                laser.draw_lasers()
         else:
             # Menu handles drawing all buttons and menu elements
             self.menu.draw_menu()

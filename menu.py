@@ -153,10 +153,10 @@ class Menu:
         self.screen.blit(self.ship_image, self.ship_rect)
         self.screen.blit(self.ufo_image, self.ufo_rect)
         pygame.draw.rect(
-            self.screen, self.settings.dual_laser_color, self.left_laser_rect
+            self.screen, self.settings.ship_laser_color, self.left_laser_rect
         )
         pygame.draw.rect(
-            self.screen, self.settings.dual_laser_color, self.right_laser_rect
+            self.screen, self.settings.ship_laser_color, self.right_laser_rect
         )
 
         # Draw buttons
