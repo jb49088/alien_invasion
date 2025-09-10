@@ -1,4 +1,6 @@
+import json
 import sys
+from pathlib import Path
 from random import randint
 from time import sleep
 
@@ -26,6 +28,7 @@ class AlienInvasion:
             (self.settings.screen_width, self.settings.screen_height)
         )
         pygame.display.set_caption(self.settings.title)
+        self.high_score_file = Path("data/high_score.json")
         self.stats = GameStats(self)
         self.menu = Menu(self)
         self.hud = HUD(self)
@@ -54,6 +57,7 @@ class AlienInvasion:
         """Respond to keypresses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self._write_high_score()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
@@ -74,6 +78,7 @@ class AlienInvasion:
         elif event.key == pygame.K_SPACE:
             self._fire_dual_lasers()
         elif event.key == pygame.K_q:
+            self._write_high_score()
             sys.exit()
 
     def _check_keyup_events(self, event):
@@ -94,6 +99,9 @@ class AlienInvasion:
             difficulty_speed = self.menu.check_difficulty_buttons(mouse_pos)
             if difficulty_speed:
                 self.settings.speedup_scale = difficulty_speed
+
+    def _write_high_score(self):
+        self.high_score_file.write_text(json.dumps(self.stats.high_score))
 
     def _start_game(self):
         self.game_active = True
