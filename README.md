@@ -38,7 +38,6 @@ alien_invasion
 ├── button.py
 ├── data
 │   └── high_score.json
-├── dual_laser.py
 ├── game_stats.py
 ├── hud.py
 ├── images
@@ -47,6 +46,7 @@ alien_invasion
 ├── menu.py
 ├── README.md
 ├── settings.py
+├── ship_lasers.py
 ├── ship.py
 ├── star.py
 └── ufo.py

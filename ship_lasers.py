@@ -2,11 +2,11 @@ import pygame
 from pygame.sprite import Sprite
 
 
-class DualLaser(Sprite):
-    """A class to manage dual lasers fired simultaneously from the ship."""
+class ShipLasers(Sprite):
+    """A class to manage lasers fired from the ship."""
 
     def __init__(self, ai_game):
-        """Create dual laser objects at the ship's current position."""
+        """Create two laser objects at the ship's current position."""
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
@@ -34,7 +34,7 @@ class DualLaser(Sprite):
         self.y = float(ai_game.ship.rect.midtop[1])
 
     def update(self):
-        """Move the laser up the screen."""
+        """Move the lasers up the screen."""
         # Update y-position
         self.y -= self.settings.dual_laser_speed
 
