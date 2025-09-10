@@ -18,6 +18,9 @@ class Menu:
         self.text_color = (102, 255, 102)
         self.font = pygame.font.SysFont(None, 96)
 
+        self._prep_ui_elements()
+
+    def _prep_ui_elements(self):
         # Prepare the title image
         self._prep_title()
         # Prepare the ship image
