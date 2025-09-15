@@ -247,7 +247,7 @@ class AlienInvasion:
         bottom_ufos = {}
         for ufo in self.ufos:
             column = ufo.rect.x
-            # If this column is emply or this UFO is lower, replace it
+            # If this column is empty or this UFO is lower, replace it
             if column not in bottom_ufos or ufo.rect.y > bottom_ufos[column].rect.y:
                 bottom_ufos[column] = ufo
 

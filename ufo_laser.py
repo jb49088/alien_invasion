@@ -1,5 +1,3 @@
-# TODO: implement smooth movement for the laser
-
 import pygame
 from pygame.sprite import Sprite
 
