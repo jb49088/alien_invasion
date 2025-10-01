@@ -58,7 +58,7 @@ alien_invasion
 
 ### Screenshots
 
-<img width="903" height="793" alt="Screenshot 2025-09-10 022405" src="https://github.com/user-attachments/assets/68938ff8-2999-4d32-8771-cbe723b8e983" />
+<img width="903" height="793" alt="Screenshot 2025-10-01 153317" src="https://github.com/user-attachments/assets/760f3935-0975-4038-b8d5-310674b915f5" />
 
 <img width="903" height="793" alt="Screenshot 2025-09-10 022833" src="https://github.com/user-attachments/assets/98b0ea3a-26f9-45cb-a338-94333a283575" />
 
