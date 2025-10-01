@@ -60,7 +60,7 @@ alien_invasion
 
 <img width="903" height="793" alt="Screenshot 2025-10-01 153317" src="https://github.com/user-attachments/assets/760f3935-0975-4038-b8d5-310674b915f5" />
 
-<img width="903" height="793" alt="Screenshot 2025-09-10 022833" src="https://github.com/user-attachments/assets/98b0ea3a-26f9-45cb-a338-94333a283575" />
+<img width="903" height="793" alt="Screenshot 2025-10-01 153732" src="https://github.com/user-attachments/assets/cd69ae58-ba29-45c0-8da2-03ef4e416416" />
 
 ### Artwork Attributions
 
