@@ -358,5 +358,5 @@ class AlienInvasion:
 
 
 if __name__ == "__main__":
-    ai = AlienInvasion()
-    ai.run_game()
+    alien_invasion = AlienInvasion()
+    alien_invasion.run_game()

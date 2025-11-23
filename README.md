@@ -1,4 +1,3 @@
-
 ### alien_invasion
 
 In alien_invasion, the player controls a spaceship that appears
@@ -20,10 +19,10 @@ loses a ship. If the player loses three ships, the game ends.
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
 Python                          11            185            161            622
-Markdown                         1             14              4             50
+Markdown                         1             15              4             50
 JSON                             1              0              0              1
 -------------------------------------------------------------------------------
-SUM:                            13            199            165            673
+SUM:                            13            200            165            673
 -------------------------------------------------------------------------------
 ```
 <!-- CODE_STATISTICS_END -->
